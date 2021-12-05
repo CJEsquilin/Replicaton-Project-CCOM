@@ -108,6 +108,73 @@ When the drug concentreations increases too high the viability decreases. This i
 
 1. Create a scatterplot for each drug comparing the AUC in GDSC and CCLE for all cell lines (hint: code from Tutorial 2 may help).
 
+```{r}
+library(ggplot2)
+x <- ggplot(aes(x=auc_GDSC, y=auc_CCLE), data=subset(cellLinesSummary, drug=="Nilotinib")) +geom_point() + xlab("GDSC AUC") + ylab("CCLE AUC")
+print(x + ggtitle("Drug: Nilotinib"))
+
+library(ggplot2)
+x <- ggplot(aes(x=auc_GDSC, y=auc_CCLE), data=subset(cellLinesSummary, drug=="17-AAG")) +geom_point() + xlab("GDSC AUC") + ylab("CCLE AUC")
+print(x + ggtitle("Drug: 17-AAG"))
+
+library(ggplot2)
+x <- ggplot(aes(x=auc_GDSC, y=auc_CCLE), data=subset(cellLinesSummary, drug=="PHA-665752")) +geom_point() + xlab("GDSC AUC") + ylab("CCLE AUC") 
+print(x + ggtitle("Drug: PHA-665752"))
+
+library(ggplot2)
+x <- ggplot(aes(x=auc_GDSC, y=auc_CCLE), data=subset(cellLinesSummary, drug=="lapatinib")) +geom_point() + xlab("GDSC AUC") + ylab("CCLE AUC")
+print(x + ggtitle("Drug: lapatinib"))
+
+library(ggplot2)
+x <- ggplot(aes(x=auc_GDSC, y=auc_CCLE), data=subset(cellLinesSummary, drug=="Nutlin-3")) +geom_point() + xlab("GDSC AUC") + ylab("CCLE AUC") 
+print(x + ggtitle("Drug: Nutlin-3"))
+
+library(ggplot2)
+x <- ggplot(aes(x=auc_GDSC, y=auc_CCLE), data=subset(cellLinesSummary, drug=="AZD0530")) +geom_point() + xlab("GDSC AUC") + ylab("CCLE AUC")
+print(x + ggtitle("Drug: AZD0530"))
+
+library(ggplot2)
+x <- ggplot(aes(x=auc_GDSC, y=auc_CCLE), data=subset(cellLinesSummary, drug=="Crizotinib")) +geom_point() + xlab("GDSC AUC") + ylab("CCLE AUC")
+print(x + ggtitle("Drug: Crizotinib"))
+
+library(ggplot2)
+x <- ggplot(aes(x=auc_GDSC, y=auc_CCLE), data=subset(cellLinesSummary, drug=="Sorafenib")) +geom_point() + xlab("GDSC AUC") + ylab("CCLE AUC")
+print(x + ggtitle("Drug: Sorafenib"))
+
+library(ggplot2)
+x <- ggplot(aes(x=auc_GDSC, y=auc_CCLE), data=subset(cellLinesSummary, drug=="PD-0325901")) +geom_point() + xlab("GDSC AUC") + ylab("CCLE AUC")
+print(x + ggtitle("Drug: PD-0325901"))
+
+library(ggplot2)
+x <- ggplot(aes(x=auc_GDSC, y=auc_CCLE), data=subset(cellLinesSummary, drug=="PD-0332991")) +geom_point() + xlab("GDSC AUC") + ylab("CCLE AUC")
+print(x + ggtitle("Drug: PD-0332991"))
+
+library(ggplot2)
+x <- ggplot(aes(x=auc_GDSC, y=auc_CCLE), data=subset(cellLinesSummary, drug=="paclitaxel")) +geom_point() + xlab("GDSC AUC") + ylab("CCLE AUC")
+print(x + ggtitle("Drug: paclitaxel"))
+
+library(ggplot2)
+x <- ggplot(aes(x=auc_GDSC, y=auc_CCLE), data=subset(cellLinesSummary, drug=="AZD6244")) +geom_point() + xlab("GDSC AUC") + ylab("CCLE AUC")
+print(x + ggtitle("Drug: AZD6266"))
+
+library(ggplot2)
+x <- ggplot(aes(x=auc_GDSC, y=auc_CCLE), data=subset(cellLinesSummary, drug=="PLX4720")) +geom_point() + xlab("GDSC AUC") + ylab("CCLE AUC")
+print(x + ggtitle("Drug: PLX4720"))
+
+library(ggplot2)
+x <- ggplot(aes(x=auc_GDSC, y=auc_CCLE), data=subset(cellLinesSummary, drug=="TAE684")) +geom_point() + xlab("GDSC AUC") + ylab("CCLE AUC")
+print(x + ggtitle("Drug: TAE684"))
+
+library(ggplot2)
+x <- ggplot(aes(x=auc_GDSC, y=auc_CCLE), data=subset(cellLinesSummary, drug=="Erlotinib")) +geom_point() + xlab("GDSC AUC") + ylab("CCLE AUC")
+print(x + ggtitle("Drug: Erlotinib"))
+
+library(ggplot2)
+x <- ggplot(aes(x=auc_GDSC, y=auc_CCLE), data=subset(cellLinesSummary)) +geom_point() + xlab("GDSC AUC") + ylab("CCLE AUC")
+print(x + ggtitle("Drug: All drugs"))
+
+```
+
 2. Calculate correlation coefficients of the AUC in GDSC and CCLE for each drug (hint: code from Tutorial 2 may help). 
 
 ```{r}
