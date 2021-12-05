@@ -266,32 +266,68 @@ dcor.distance_correlation(df['auc_GDSC'], df['auc_CCLE'])
 
 1. Are there any cell lines that seem to be consistently sensitive? (Hint: look for the 5 cell lines which seem the most resistant in both studies according to the average drug response by AUC; code from Tutorial 3 may help) What effect might this have on your conclusions and interpretations of the agreement between the studies? For example, do you observe any increase in replicability (as measured by correlation of drug response) if you exclude the most resistant cell lines?
 
+From the fifteen drugs that were studied, drug 17-AAG shows to be more consistenly sensitive of them all. Besides 17-AAG the other drug close is PD-0325901.If I were to exclude the most resistant cell lines from my observations, besides 17-AAG there is not any high and/or good increase in replicability.
+
 2. Classify each cell line as resistant or sensitive to a drug based on its AUC value (Hint: choose a cutoff for which cell lines with AUC below the cutoff are considered sensitive and explain your choice of cutoff(s); code from Tutorial 3 may help). Compare the resistance status of cell lines in GDSC and CCLE for each drug using either a scatterplot of AUC values colored by resistance/sensitivity in each study or a table.
+
+Answer to this question can be found in {r,sensitivity all drugs} from tutorial 3.
 
 3. Compute the Matthews correlation coefficient for sensitivity status (from #2) of cell lines in GDSC and CCLE for each drug (Hint: code from Tutorial 3 may help). 
 
+Answer to this question can be found in {r,matthews} from tutorial 3.
+
 4. Are there any drugs for which most or all cell lines seem to be resistant in both studies (Hint: for each cell line, look at its average response across all drugs; code from Tutorial 3 may help)? If so, what are the correlation values for these drugs? What do these results imply about the replicability of these studies?
+
+Erlotinib, Laptinib, Nilotinib and PHA-665752 are the drugs for which most or all cell lines seem to be resistant in both studies. Now base on the correlation bar graph each drug have a correlation of: Erlotinib : 0.4, Lapatinib : 0.4, Nilotinib: 0.3 and PHA-66572 : 0.3. By these results it can be imply that most drugs studies are less resistant and more sensitive.
 
 5. Compare the Matthews correlation coefficient values by drug classes defined in Tutorial 3 (No effect, Narrow effect, Broad effect). Which drug class shows the most agreement between the studies? 
 
+Drug classes:
+
+No effect: Sorafenib, Erlotinib and PHA-665752 (This had minimal observed response for all cell lines)
+
+Narrow effect: Nilotinib, Lapatinib, Nutlin-3, PLX44720, Crizotinib, PD-0332991, AZD0530, TAE684 (Response in only a small subset of cell lines)
+
+Broad Effect: AZD6244, PD-0325901, 17-AAG and Paclitaxel (Response in large number of cell lines)
+
 6. Would you say that the sensitivity results for the two studies tend to agree?
 
+Yes, because most of the cell lines responded in favor of sensitivity in comparison to resistant.
+
 7. For one of the targeted drugs, examine the cell lines that were sensitive ih the CCLE and/or GDSC. See if you can find out what types of cells these are by searching the online Cancer Cell Line Encyclopedia http://www.broadinstitute.org/ccle (this will prompt you to register with a username, password, and email address. If you prefer, you can also search the cell line on other websites). See if you can find out what types of cancers this drug is targeted for using the NCI cancer drug database at https://www.cancer.gov/about-cancer/treatment/drugs. Does the list of cell lines found to be sensitive in the two studies agree with this?
+
+According to the National Institute of Cancer(https://www.cancer.gov/about-cancer/treatment/drugs/nilotinib), Nilotinib is FDA approved and is use for Chronic Myelogenous Leukemia (CML). For these specific drug it tend to be more resistant tha sensitive.
 
 ### Modeling the relation between two variables (drug concentration vs viability)
 
 1. Explore the response curves for several drug-cell line combinations. How many drugs-cell line combinations contain viability response values that would potentially enable them to be summarized into an IC50 value? You can answer this, for example, by checking whether there are viability values below 50%.
+
+The only curves with values under 50% seem to be the combination of the drug 17-AAG and cell line H4. When graphed the curves coincide with the IC50 values given by the studies and represented by the vertical dotted lines. The combination of 17-AAG and 22RV1 have values under 50%, however these do not coincide with the suggested IC50 values.
 
 2. Analyze the re-calculations of IC50 and AUCs from the drug 17-AAG in the H4 cell-line and the drug Nilotinib cell-line in the 22RV1 cell-line. See the figure below and asnwer: which statistic is more roboust, IC50 or AUC? Which statistic is more generalizable, IC50 or AUC? Justify your answer with examples and/or using the whole data recalculations from the *mySummarizedData* variable.
 
 <img src="Figures/reproducible.png" width="400px" height="200px" />
 Modified from [Kirstie Whitaker](https://github.com/KirstieJane/).
 
+Although the picture on the bottom doesn't load, I will argue that the IC50 is more robust and less generalizable, while the AUC is the opposite. This is because Haibes-Kain et al. mentions that while the first cannot be estimated due to the effect of the drug in the study, the latter can. "In both studies, the IC50 could not be estimated in many cases, as drug concentration necessary to inhibit 50% of growth was not reached. In CGP, IC50 was estimated using a Bayesian sigmoid model for drug response. In contrast, CCLE reported the maximum concentration for inactive compounds (referred to as placeholder values) rather than the extrapolated IC50. AUC measures do not require extrapolation and can always be estimated from the dose–response curve."
+
 3. Are the results more replicable if one uses the same code to calculate IC50 or AUC on the different datasets? Hint: you can use code from tutorial #3 to evaluate this.
+
+I attempted to do this analysis, however I kept getting the same graph. Most likely I used the incorrect code to attempt to answer this question.
 
 4. Summarize the viability curves of all the drugs in each cell-line using the slope of linear model. Is the slope of the linear regression informative of the drug response? Can we improve the replicability of the studies by using the value of the slope instead of IC50s or AUCs? 
 
+I was unable to achieve this summarized version.
+
 ## Discussion:
 
-Summarize the main findings of your analyses in the previous four sections here. 
+Summarize the main findings of your analyses in the previous four sections here.
+
+Tutorial 1: In this tutorial we explored the data we are working with. We then made sure that the data made sense and was correct, and performed a basic analysis using an histogram of the viability as a function to the drug concentration.
+
+Tutorial 2: There is little to no correlation between the studies of AUC and IC50. We did different correlation, Pearson, Spearman and distance correlation. Based on the distance correlation in AUC there is agreement because its closer to 1 while in IC50 theres little to no agreement because its closer to zero. Meaning that IC50 has independance between variables while AUC has linear subspaces of variables are equal.
+
+Tutorial 3: Finding factors that helps two different studies, CCLE and GDSC.For this the AUC and IC50 average value on drugs were analyzed.Then the proportion of two factors, sensitivity and resistant were implied to see how drugs were reacting in both studies.In addition a Matthew's correlation was taken into account to verify if he drugs were really showing their true values,in this case if both were resistant or sensitive or a combination of one being sensitive in one study and resistant in the other and vice versa. Overall it show in both studies,CCLE and GDSC, that the drugs were more consistant in sensitivity rather than resistant.
+
+Tutorial 4:During this tutorial, we observed the relation between the drug concentration and viability. We compared cell line and drug combinations across studies, in relation to viability as measured by IC50 and AUC. We attempted to create a summarized version of these comparisons to no avail.
 
