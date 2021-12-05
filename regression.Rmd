@@ -80,6 +80,8 @@ of the response curves? How can IC50 values be estimated if
 there are no viabilities below 50% for the second example? 
 How did the two different studies deal with these cases?
 
+According to Haibe-Kains et al. one study dealt with this by using a Bayesian sigmoid models model for drug response for the IC50. CCLE just reported the maximum concentration for inactive compounds.
+
 ## Logistic regression
 
 A common way to model viability response curves is to fit logistic
