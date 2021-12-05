@@ -1,5 +1,7 @@
 # PR2017replicaton
 
+## Members: Michael Terrefortes, Jasiel Rivera, Jose Portela, Christian Esquilin
+
 Clone or download this repository to your computer and open the `.Rmd` files in Rstudio.
 
 ## Main Analysis Template R Markdown:
