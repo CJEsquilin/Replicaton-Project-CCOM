@@ -2,10 +2,10 @@
 
 ## Members: Michael Terrefortes, Jasiel Rivera, Jose Portela, Christian Esquilin
 
-Video: https://drive.google.com/file/d/10GUT0goaHgYjGryrgEPDRMKvsyvJwclG/view?usp=sharing \n
-Github de projecto: https://github.com/CJEsquilin/Replicaton-Project-CCOM \n
-Google Colab: https://colab.research.google.com/drive/1otpWQ2f_TmAUp18fOPggoQFKCxLGwoVc?usp=sharing \n
-Github original: https://github.com/areyesq89/PR2017replicaton \n
+Video: https://drive.google.com/file/d/10GUT0goaHgYjGryrgEPDRMKvsyvJwclG/view?usp=sharing <br />
+Github de projecto: https://github.com/CJEsquilin/Replicaton-Project-CCOM <br />
+Google Colab: https://colab.research.google.com/drive/1otpWQ2f_TmAUp18fOPggoQFKCxLGwoVc?usp=sharing <br />
+Github original: https://github.com/areyesq89/PR2017replicaton <br />
 
 ## Instrucciones: Para correr el replicaton en Google Colab presione el enlace provisto. Debe subir los archivos “rawPharmacoData.csv” y “summarizedPharmacoData.csv” para poder correr el código en Colab. Por otro lado, es recomendable que presione “restart and run all” para correr el código. También se incluyen los enlaces del Github repository y video. Para ver el video debe bajar el video del enlace. 
 
