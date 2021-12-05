@@ -55,12 +55,17 @@ models to use. The code below
 transforms the data into a logarithmic scale and plots a histogram separately for each study. Based on these plots, which study would you say 
 has the most consistent experimental protocol?
 
+CCLE
+
 ```{r quest6, warning=FALSE}
 library(ggplot2)
 library(cowplot)
 ggplot( pharmacoData, aes( log2(concentration) ) ) +
     geom_histogram(fill = "white", colour="black") +
     facet_wrap(~study)
+    
+hist(pharmacoData$viability)
+sum(pharmacoData$viability > 100)
 ```
 
 
@@ -79,6 +84,8 @@ the two studies using density plots. Based on the distribution of
 the viability scores, would you say there are obvious differences 
 between the two studies?
 
+There is not an obvious difference between the two.
+
 ```{r}
 ggplot( pharmacoData, aes( viability, group=study, colour=study) ) +
     geom_density(fill="white", lwd=2, alpha=0.1) + xlim(0, 170)
@@ -93,5 +100,5 @@ ggplot( pharmacoData, aes( y=viability, x=drug, fill=study) ) +
     theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust=.5)) +
     ylim(0, 200)
 ```
-
+Other than Paditabel, these studies seem to be consistent.
 
