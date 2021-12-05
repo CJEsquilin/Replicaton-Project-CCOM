@@ -24,7 +24,7 @@ Recall that in the summarized dataset, for each cell line and drug combination, 
 Are cell lines with higher IC50 values more or less susceptible? What about drugs with higher IC50 values - are they more or less toxic?
 
 
-> Place your answer here
+> Answer: The drugs with higher IC50 values are more susceptible. The drugs with more IC50 drug concentration is less viable. Based on the photo the more drug concentration the lower the viability. Also based on the study by Haibe-Kains, "cell lines with lower IC50 (or AUC) values than this range are defined as sensitive, and those with IC50 (or AUC) values higher than this range are called resistant."
 
 
 2. AUC (Area Under the Curve): despite the name, this is actually the area *above* the curve estimated by the drug concentration and viability data (or 1-area under the curve). Note that the estimation of this curve is not a simple task in itself - check out the vignette on summarizing the relationship between two variables to learn more. 
@@ -33,11 +33,11 @@ Are cell lines with higher IC50 values more or less susceptible? What about drug
 
 Are cell lines with higher values of AUC more or less resistant?
 
-> Place your answer here
+> Answer: The cell lines with higher AUC values are more resistant. Also based on the study by Haibe-Kains, "those with IC50 (or AUC) values higher than this range a
 
 Are drugs with higher AUC more or less toxic?
 
-> Place your answer here
+> Answer: Higher AUC drugs are more toxic because they have a lower viability percentage. This is based on the previous image of AUC and the drug concentration and viability
 
 ## Load the summarized pharmacological dataset into the session
 First, we'll read in the .csv file that contains the summarized pharmacological data (including the IC50 and AUC values for each drug and cell line combination, as described above). 
@@ -54,8 +54,13 @@ Notice that there are 2,257 rows - each row here corresponds to a cell line-drug
 Making up these combinations are 288 unique cell lines, and 15 drugs. 
 
 Was every cell line in the dataset tested with every drug?
+```{r}
+x <- table(cellLinesSummary$cellLine)
+freq_df <- as.data.frame(x)
+filter(freq_df, Freq == 15)
+```
 
-> Place your answer here
+> Answer: Every cell line was tested with some drug. Based on the previous code there were 15 drugs and not all the cellLines were tested with all 15 drugs. The list above shows the cellLines tested with 15 drugs
 
 ## Comparing response of drug AZD0530 in the two studies
 
@@ -73,7 +78,7 @@ ggplot(aes(x=auc_GDSC, y=auc_CCLE), data=subset(cellLinesSummary, drug=="AZD0530
 
 Perfect agreement between the GDSC and CCLE AUC values would mean all the points would fall on a straight line. How would you describe the level of agreement between the AUC values of drug AZD0530 in the CCLE and GDSC studies? Does it seem like higher values of AUC in the GDSC correspond to higher values in the CCLE?
 
-> Place your answer here
+> Answer: Theres some agreement in the middle but also very spread values. It looks like lower values of GDSC correspond to lower values of CCLE. There are some outliers where the high value CCLE also corresponds to high value in GDSC
 
 Next, let's look at the same type of scatterplot for the IC50 values. 
 
@@ -86,11 +91,11 @@ ggplot(aes(x=ic50_GDSC, y=ic50_CCLE), data=subset(cellLinesSummary, drug=="AZD05
 
 What is different about this plot compared to the AUC plot for this drug above? 
 
-> Place your answer here
+> Answer: The difference is how there seems to be very little correlation compared with the previous graph. For example a high value in IC50 can have a lower value in IC50 so there is no correlation only in a few outliers.
 
 First, you may notice that there are many points with the highest value of IC50 for CCLE. Recall that this study measured a fixed set of doses, regardless of how the cells responded, whereas in the GDSC drug concentrations were increased if no response was observed. What does this mean for the IC50 values in the CCLE? Are they more likely to be too high or too low? Why?
 
-> Place your answer here
+> Answer: For the CCLE values which are fixed doses they are more likely to be high. Again this occurs because the doses are fixed regardless of how the cells responded. While on the GDSC the doses increased when no reaction occured so in this value the cells are more spread out while in CCLE are almost all high.
 
 Another thing to notice is that there is a very large range of IC50 values in the GDSC, but most values are small. This indicates a *skewed* distribution that may benefit from a log-transformation. Next, we'll plot log10-transformed values of IC50. We'll also plot *negative* values, so that increasing values of IC50 represent increasing drug toxicity (to make the plot more comparable to the AUC plot above).
 
@@ -104,7 +109,7 @@ ggplot(aes(x=-log10(ic50_GDSC), y=-log(ic50_CCLE)), data=subset(cellLinesSummary
 
 How would you describe the level of agreement between the IC50 values of drug AZD0530 in the CCLE and GDSC studies? Does it seem like higher values of AUC in the GDSC correspond to higher values in the CCLE?
 
-> Place your answer here
+> Answer: Based on the IC50 graph there appears to be little agreement between CCLE and GDSC. This is because the dots dont appear in a stright line or similar to it. Based on the graph theres little to no correlation between the high GDSC and high CCLE values. There are noticible higher GDSC values but in many cases the CCLE stays low. There are many outliers that it shows how the GDSC high values correlates with the CCLE high value
 
 ## Comparing summary measures of drug response across all drugs
 
@@ -132,11 +137,11 @@ ggplot(aes(x=-log10(ic50_GDSC/10^6), y=-log10(ic50_CCLE/10^6)), data=cellLinesSu
 
 Compare this plot to Figure 2 in the Haibe-Kains reanalysis paper. Does it seem to agree?
 
-> Place your answer here
+> Answer: Based on the Figure 2 of the Haibe-Kains reanalysis paper both graphs agree and are similar. Both of them have similar outliers. https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4237165/
 
 Looking at the IC50 values for both studies across all 15 drugs, would you say that they tend to agree? Why or why not?
 
-> Place your answer here
+> Answer: Looking at the results of IC50 values of both studies of 15 drugs they tend to agree. The reason being because they have the similar graphs and outliers. The 15 graphs of Haibe-Kains paper looks the same as the one in here. https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4237165/
 
 We have visually inspected the agreement of the drug response data between the two studies. Now, we'd like to go a step further and quantify the agreement with statistics. We'll start by exploring measures of correlation.
 
@@ -144,7 +149,7 @@ We have visually inspected the agreement of the drug response data between the t
 
 One way to quantify the degree of agreement of two variables is to calculate the *correlation*. Correlation is a statistic between -1 and 1 that measures the degree of association between two variables. In this case our two variables are the drug response in CCLE and the drug response for GDSC. The higher the correlation value, the more the two variables agree with one other. If two variables are exactly the same, then the correlation is equal to 1. If two variables are unrelated, then the correlation value will be close to zero. What would a negative correlation mean?
 
-> Place your answer here
+> Answer: A negative indicates that one variable increases while the other decreases, and vice-versa. It means that the relationship that exists is always opposite of each other.
 
 When interpreting a correlation value, we consider how close the value is to 1 (or negative 1). There are no exact rules on calling a correlation "weak" or "strong", but generally values above around 0.7 in magnitude are considered strong and below around 0.3 in magnitude are considered weak. Here are some example scatterplots and their resulting correlation coefficients (using the Pearson method to calculate - more on this below). 
 
@@ -231,7 +236,7 @@ ggplot(data=corrcomp, aes(x=x,y=y)) +
 
 In the previous example, why is the Spearman correlation so high, while the Pearson correlation is only moderate?
 
-> Place your answer here
+> Answer: This is a monotonously increasing ratio, so Spearman is exactly 1. It means both values are monotonically related even if their relationship is not lineal.
 
 Now we'll summarize different measures of correlation of the IC50 values to assess the level of 
 replication between these two experiments. First, we'll compute the two different measures for correlating 
