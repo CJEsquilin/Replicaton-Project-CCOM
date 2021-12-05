@@ -1,5 +1,5 @@
 ---
-title: "Insert your team name here"
+title: "Michael Terrefortes, Jose Portela, Jasiel Rivera, Christian Esquilin"
 output: html_document
 date: Replicathon 2017
 author: Team members names
@@ -29,7 +29,35 @@ You may find it helpful to use the version control and code sharing system calle
 
 1. How many cell-lines are contained in the data?
 
+```{r}
+rawFile <- "/content/rawPharmacoData.csv"
+pharmacoData <- read.csv(rawFile)
+head(pharmacoData)
+str(pharmacoData)
+length(unique(pharmacoData$cellLine))
+```
+
 2. What drug concentrations were used in each study?
+
+```{r}
+import pandas as pd
+df = pd.read_csv(r'/content/rawPharmacoData.csv')
+
+# load CCLE DATA
+CCLE = df[(df['study'] == 'CCLE')]
+unique = CCLE['concentration'].unique()
+print("Concentrations used in CCCLE")
+for number in unique:
+  print(round(number, 2))
+
+# load GDSC DATA
+GDSC = df[(df['study'] == 'GDSC')]
+unique = GDSC['concentration'].unique()
+print("Concentrations used in GDSC")
+for number in unique:
+  print(round(number, 2))
+```
+
 
 3. Histograms, appart from telling how is the data
 distributed, can also make evident potential
@@ -37,17 +65,44 @@ problems with the data. Plot a histogram
 of drug viabilities. Does it look as one would
 expect from the description of the data?
 
+```{r}
+hist(pharmacoData$viability)
+sum(pharmacoData$viability > 100)
+```
+
+No, it doesnt look like it should. By definition viability has a range from 0 to 100. As we can see, on this histogram theare some values over 100.
+
 4. How many viability data points are within the
 expected range according to the definition of viability (e.g. above 0 
 and below 100)? Try to come up with explanations about
 the values that are out of range. Are these due to technical
 issues? Biology?
 
+```{r}
+range( pharmacoData$viability )
+sum( pharmacoData$viability < 0 )
+sum( pharmacoData$viability < 100 )
+```
+
 5. Read the csv file containing the summarized data files. What kind
 of variables are in the data? What does each column represents?
 
+```{r}
+cellLinesSummary <- read.csv("summarizedPharmacoData.csv", header=TRUE)
+str(cellLinesSummary)
+```
+
+There is 6 kind of variables on this data. CellLine, drug, ic50_CCLE, auc_CCLE, ic50_GDSC, auc_GDSC. Cellline and drug are categorial the others are numerical. ic50 is a measurment of effectivines of drugs and auc is the are under the curve.
+
 6. Plot a histogram of the viability scores as a function of the drug
 doses. Are stronger drug concentrations consistent with lower viability scores?
+
+```{r}
+library(ggplot2)
+ggplot( pharmacoData, aes(log2(viability)) ) + geom_histogram() + facet_wrap(~study)
+```
+
+When the drug concentreations increases too high the viability decreases. This is also true when the concentration is very low. It seems that the sweet spot is around 6.
 
 ### Using Correlation Measures to Assess Replicability of Drug Response Studies
 
@@ -55,13 +110,71 @@ doses. Are stronger drug concentrations consistent with lower viability scores?
 
 2. Calculate correlation coefficients of the AUC in GDSC and CCLE for each drug (hint: code from Tutorial 2 may help). 
 
+```{r}
+row_sub = apply(cellLinesSummary, 1, function(row) all(row !=0 ))
+arreglado <- cellLinesSummary[row_sub,]
+```
+
+```{r}
+library(dplyr)
+
+drugCorrs <- cellLinesSummary %>% 
+    group_by(drug) %>% summarise(Pearson_auc=cor(-log10(auc_GDSC/10^6),-log10(auc_CCLE/10^6), method="pearson"),
+                                 Spearman_auc=cor(-log10(auc_GDSC/10^6),-log10(auc_CCLE/10^6), method="spearman"))
+drugCorrs
+```
+
+```{r}
+install.packages('reshape2')
+library(reshape2)
+
+drugCorrs <- melt(drugCorrs)
+colnames(drugCorrs) <- c("Drug", "Measure", "Correlation")
+drugCorrs_auc <- drugCorrs[grep("auc", drugCorrs$Measure),]
+
+ggplot(data=drugCorrs_auc, aes(x=Drug, y=Correlation, fill=Measure, group=Measure)) +
+  geom_bar(stat="identity", position=position_dodge(), colour="black") + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_fill_grey()
+```
+
+```{r}
+cor.pearson <- round(cor(cellLinesSummary$ic50_GDSC, cellLinesSummary$ic50_CCLE, method="pearson"),2)
+cor.spearman <- round(cor(cellLinesSummary$ic50_GDSC, cellLinesSummary$ic50_CCLE, method="spearman"),2)
+
+ggplot(data=cellLinesSummary, aes(x=ic50_GDSC,y=ic50_CCLE)) +
+     geom_point() +
+     ggtitle(paste0("Pearson = ", cor.pearson, ", Spearman = ", cor.spearman))+ 
+     geom_smooth(method='lm', se=FALSE)
+```
+
+```{r}
+cor.pearson <- round(cor(cellLinesSummary$auc_GDSC, cellLinesSummary$auc_CCLE, method="pearson"),2)
+cor.spearman <- round(cor(cellLinesSummary$auc_GDSC, cellLinesSummary$auc_CCLE, method="spearman"),2)
+
+ggplot(data=cellLinesSummary, aes(x=auc_GDSC,y=auc_CCLE)) +
+     geom_point() +
+     ggtitle(paste0("Pearson = ", cor.pearson, ", Spearman = ", cor.spearman))+ 
+     geom_smooth(method='lm', se=FALSE)
+ ```
+
 3. Based on the scatterplot and correlation values, would you say that they tend to agree? Why or why not?
+
+Answer: Based on the scatterplot and correlation values both tend to agree on Spearman. This is because if the scatterplot is disperse then the Spearman value is higher while if not then is slower. Example Nilotinib is concentrated in the lower area and the Spearman value is lower in the Pearson and Spearman barplot. In the other two graphs with Spearman and Pearson they also dont agree much. In the AUC graph theres some values that correlate into a line but many dont.
 
 4. Does the AUC or IC50 suggest more agreement between the studies? 
 
+Answer: Based on the study by Haibe-Kains both IC50 and AUC estimates had a poor agreement between studies. https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4237165/#SD1
+
+But based on the analisys done AUC has a better agreement between AUC CCLE and GDSC because some values ended in a stright line. But still the agreement is very poor.
+
 5. Which drug do you think shows the most consistency between the studies? How about the least? 
 
+Answer: Drug 17-AAG shows more consistency between studies. This is because both in AUC and IC50 there are similar results in Pearson and Spearman correlation graphs. The drug with least consistency is PHA-665752 beacuse the coefficient correlation is very different in both graphs of Pearson and Spearman. Also Haibe-Klains says "Lapatinib and Paclitaxel...overall consistency was rather poor".
+
 6. If you calculated more than one type of correlation coefficient (for example Pearson and Spearman), how do they differ? Which do you think is a better summary of the consistency between the two studies? 
+
+Answer: The difference of both correlations is how Spearman is a better summary between both studies this is because in both graphs I was able to make the Spearson correlation. On the IC50 the Pearson value is 0.31 while the Spearman is 0.56. Also in the AUC the Pearson value is 0.67 and the Spearman is 0.54.
 
 7. We have explored Pearson and Spearman correlation, but what about other correlation measures? For example, you could try out distance correlation, which is sensitive to nonlinear relationships. You can find this measure in the `energy` R package, which you'll need to install and load with the following commands:
 
@@ -71,6 +184,16 @@ doses. Are stronger drug concentrations consistent with lower viability scores?
     ```
 
     Then, you can compute distance correlation with the `dcor()` function. How does this correlation measure compare to Pearson and Spearman? Do your conclusions about the agreement between the two studies change at all using this measure?
+ 
+```{r}  
+from scipy.spatial import distance
+import pandas as pd
+import dcor
+df = pd.read_csv("summarizedPharmacoData.csv")
+dcor.distance_correlation(df['auc_GDSC'], df['auc_CCLE'])
+```
+       
+       Answer: I couldnt load the "energy" library of R. Instead I tried in RStudio and was able to do the correlation. Also in order to have code here I used the python equivalent of distance correlation. The distance correlation of AUC was of 0.6344 while the Pearson as said before is 0.67 while the Spearman was 0.54. In the IC50 the distance correlation was 0.36 while the Pearson was 0.31 and Spearman 0.56. The distance correlation in both studies stand in between the Pearson and Spearman correlations. In the study Haibe-Klains explains how "Again, the drug sensitivity calls for both IC50 and AUC estimates(Supplementary Tables 1 and 2) had a poor agreement between studies". So both Pearson and spearman as little to no agreement between studies. Shin says that "Distance correlation ranges from 0 to 1, where 0 implies independence between variables and 1 implies that the linear subspaces of variables are equal." https://towardsdatascience.com/introducing-distance-correlation-a-superior-correlation-metric-d569dc8900c7 Based on this information the conclusion is that in AUC there is agreement because its closer to 1 while in IC50 theres little to no agreement because its closer to zero. Meaning that IC50 has independance between variables while AUC has linear subspaces of variables are equal.
 
 ### Identifying biological factors that influence replicability of pharmacogenomic studies
 
