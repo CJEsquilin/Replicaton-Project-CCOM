@@ -78,7 +78,7 @@ Here we have simulated half the AUC values in each study to be closer to zero an
 
 If all cell lines are resistant to a particular drug, would you expect to find a high correlation between the two studies for that drug? Would that result imply that the two studies are not replicable?
 
-> Place your answer here
+> In this case the most of the resistant cell lines have a low correlation between both stuides in which wont imply not being replicable.
 
 Now, let's explore the average drug responses by cell line. First, we'll compute the average drug responses by cell line (averaged over all drugs). Then we'll create a scatterplot to compare these averages in the two studies.
 
@@ -108,7 +108,7 @@ ggplot(drugAvg, aes(x=mean_auc_GDSC, y=mean_auc_CCLE)) +
 
 What is the most sensitive cell line?
 
-> Place your answer here
+> The one with x = 0.3 of mean_auc_GDSC and y = 0.4 of mean_auc_CCLE or in other terms (0.3,0.4).
 
 ## Replicability results for sensitive versus resistant cell lines
 
@@ -129,7 +129,7 @@ table("GDSC"=cellLinesSummary$sensitivity_GDSC, "CCLE"=cellLinesSummary$sensitiv
 
 What proportion of the drug-cell line combinations are in agreement of sensitivity/resistance between the two studies?
 
-> Place your answer here
+> It has a proportion of 486 in the case of Resistant/Sensitive and in case of the question for Sensitive/Resistance is 217.
 
 Next, we'll create a scatterplot of the AUC values, colored by sensitivity. We'll start with just the drug "PLX4720".
 
@@ -153,11 +153,11 @@ ggplot(aes(x=auc_GDSC, y=auc_CCLE, colour=category), data=subset(cellLinesSummar
 
 In this plot, which colors of points correspond to 'agreement' between the two studies? 
 
-> Place your answer here
+> Orange and Green.
 
 Overall, do most cell lines seem to agree or disagree in whether they were sensitive or resistant to PLX4720?
 
-> Place your answer here
+> Just by looking at it looks a well balance but most cell lines are concentrated in being resistan in both studies.
 
 Next, we'll create the same scatterplot above, but for all drugs, so we can compare them side by side.
 
@@ -208,7 +208,8 @@ ggplot(data=drugCorrs, aes(x=drug, y=matthews_corr)) +
 
 Examining the Matthew's correlation values that take into account cell line categories, which drug do you think shows the most consistency between the studies? How about the least? 
 
-> Place your answer here
+> Erlotinib shows most consistency
+17-AAG shows least consistency
 
 Does this agree with your visual assessment and answers to these same questions in the previous tutorial (tutorial 2) using continuous correlation measures (Pearson and Spearman)?
 
