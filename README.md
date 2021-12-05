@@ -2,6 +2,8 @@
 
 ## Members: Michael Terrefortes, Jasiel Rivera, Jose Portela, Christian Esquilin
 
+## Instrucciones: Para correr el replicaton en Google Colab presione el enlace provisto. Debe subir los archivos “rawPharmacoData.csv” y “summarizedPharmacoData.csv” para poder correr el código en Colab. Por otro lado, es recomendable que presione “restart and run all” para correr el código. También se incluyen los enlaces del Github repository y video. Para ver el video debe bajar el video del enlace. 
+
 Clone or download this repository to your computer and open the `.Rmd` files in Rstudio.
 
 ## Main Analysis Template R Markdown:
